@@ -17,7 +17,4 @@ Dashboard -> Budget -> Goals/Goals & Progress -> User
 
 
 
-## MVP First Draft ##
-------------------
-
 
