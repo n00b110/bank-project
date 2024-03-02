@@ -16,27 +16,31 @@
   </head>
   <body>
     <!-- navbar -->
-    <!-- all buttons redirect to login if clicked while not logged in -->
     <div class="container" style="padding-left: 20px; padding-right: 20px;">
-      <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid" style="background-color: blanchedalmond;">
+      <nav class="navbar navbar-expand-lg" style="border-radius: 10px;">
+        <div class="container-fluid" style="background-color: blanchedalmond; border-radius: 10px;">
+          <!--Title Img-->
           <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
             <img src="{{url_for('static', filename='headerimage.jpg')}}" alt="Bootstrap" width="45" height="45">
-            CS-451R Project</a> <!-- change href here to dashboard if logged in -->
+            CS-451R Project</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
+              <!--Dashboard-->
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="{{ url_for('dashboard') }}">Dashboard</a>
               </li>
+              <!--Budget-->
               <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('budget') }}">Budget</a>
               </li>
+              <!--Goals-->
               <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('goals') }}">Progress/Goals</a>
               </li>
+              <!--Login Dropdown-->
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Login
@@ -44,7 +48,7 @@
                 <ul class="dropdown-menu" style="background-color: blanchedalmond;">
                   <li><a class="dropdown-item" href="{{ url_for('index') }}">Login</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('settings') }}">User Settings</a></li>
-                  <li><a class="dropdown-item" href="#">Logout</a></li> <!-- FIX THIS -->
+                  <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
                 </ul>
               </li>
             </ul>
