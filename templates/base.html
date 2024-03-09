@@ -49,15 +49,27 @@
             </ul>
           </div>
         </div>
+      </nav>
+      </div>
       </div>
     </nav>
+    </div>
+    </nav>
     <!-- body formatting -->
-    {% block body %}
     <style>
       .col {
       padding-bottom: 20px;
       }
+      
+      .navbar-collapse {
+      justify-content: flex-end;
+      }
+
+      .base {
+        background-color: aquamarine;
+      }
     </style> 
+    {% block body %}
     {% endblock %}
 
     <script
