@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title%}TITLE{% endblock %}
+{% block title%}CS 451R Bank Project{% endblock %}
 
 {% block body %}
     <div class="container">
@@ -47,7 +47,7 @@
             </div>
             <button type="submit" class="btn btn-primary" style="background-color: #ffd700;">Login</button>
             <div class="mb-3 form-check;" style="padding-top: 5px;">
-              <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
+              <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ url_for('fPassword') }}">
                 Forgot Password?
               </a>
             </div>
