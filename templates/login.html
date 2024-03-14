@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %} {% endblock %}
+{% block body%}
+<div class="col-sm-4" style="align-content: center;">
+    <form action="#" method="post" style="border: 2px solid black; padding-left: 20px; padding-right: 20px; padding-top: 10px;">
+      <div class="mb-3" style="text-align: left;">
+        <label for="inputEmail" class="form-label">Email address</label>
+        <input name="emailName" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" style="border: 1px solid black; background-color: blanchedalmond;">
+      </div>
+      <div class="mb-3" style="text-align: left;">
+        <label for="inputPassword" class="form-label">Password</label>
+        <input name="pw" type="password" class="form-control" id="inputPassword" style="border: 1px solid black; background-color: blanchedalmond;">
+      </div>
+      <button type="submit" class="btn btn-primary" style="background-color: #ffd700;">Login</button>
+      <div class="mb-3 form-check;" style="padding-top: 5px;">
+        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ url_for('fPassword') }}">
+          Forgot Password?
+        </a>
+      </div>
+    </form>
+</div>
+{% endblock %}
