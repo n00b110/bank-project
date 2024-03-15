@@ -1,7 +1,9 @@
 from flask import Flask, redirect, url_for, render_template
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
 
 app = Flask(__name__)
-
+db = SQLAlchemy()
 
 @app.route('/')
 def index():
