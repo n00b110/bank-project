@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %} {% endblock %}
+{% block body%}
+<div>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Expense Tracker</title>
+    </head>
+    <body>
+        <div class="container mt-5">
+            <h1 class="text-center">Expense Tracker</h1>
+            <form>
+                <div class="form-group">
+                    <label for="monthlyIncome">Monthly Income:</label>
+                    <input type="number" class="form-control" id="monthlyIncome" placeholder="Enter your income">
+                </div>
+              <h1 class="text-center">50% Needs</h1>
+                <div class="form-group">
+                    <label for="housing">Housing</label>
+                    <input type="number" class="form-control" id="housing" placeholder="Enter housing expenses">
+                </div>
+                <div class="form-group">
+                    <label for="groceries">Groceries</label>
+                    <input type="number" class="form-control" id="groceries" placeholder="Enter grocery expenses">
+                </div>
+                <div class="form-group">
+                    <label for="bills">Bills and Utilities</label>
+                    <input type="number" class="form-control" id="bills" placeholder="Enter bills and utilities expenses">
+                </div>
+                <div class="form-group">
+                  <label for="health costs">Health Costs</label>
+                  <input type="number" class="form-control" id="bills" placeholder="Enter health expenses">
+                </div>
+                <div class="form-group">
+                  <label for="car payments">Car Payments</label>
+                  <input type="number" class="form-control" id="bills" placeholder="Enter car payment expenses">
+                </div>
+                <div class="form-group">
+                  <label for="transportation">Transportation</label>
+                  <input type="number" class="form-control" id="bills" placeholder="Enter Transportation expenses">
+               </div>
+    
+              <h1 class="text-center">30% Wants</h1>
+              <div class="form-group">
+                  <label for="eating out ">Eating Out</label>
+                  <input type="number" class="form-control" id="housing" placeholder="Enter Eating out expenses">
+              </div>
+              <div class="form-group">
+                  <label for="hobbies">Hobbies</label>
+                  <input type="number" class="form-control" id="groceries" placeholder="Enter Hobbies expenses">
+              </div>
+              <div class="form-group">
+                  <label for="shopping">Shopping</label>
+                  <input type="number" class="form-control" id="bills" placeholder="Enter shopping expenses">
+              </div>
+              <div class="form-group">
+                  <label for="entertainment">Entertainment</label>
+                  <input type="number" class="form-control" id="bills" placeholder="Enter entertainment expenses">
+              </div>
+              <h1 class="text-center">20% Savings</h1>
+              <div class="form-group">
+                  <label for="emergency fund">Emergency Fund</label>
+                  <input type="number" class="form-control" id="housing" placeholder="Enter emergency fund expenses">
+              </div>
+              <div class="form-group">
+                  <label for="retirement">Retirement</label>
+                  <input type="number" class="form-control" id="groceries" placeholder="Enter retirement savings">
+              </div>
+              <div class="form-group">
+                  <label for="investments">Investments</label>
+                  <input type="number" class="form-control" id="bills" placeholder="Enter investment expenses">
+              </div>
+                
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
+</div>
+{% endblock %}
