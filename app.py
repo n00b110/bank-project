@@ -204,42 +204,42 @@ goals_line_graph.layout = html.Div(children=[
                     x=x_data,
                     y=needs_baseline,
                     mode='lines+markers',
-                    marker=dict(color='blue'),
+                    marker=dict(color='#ADD8E6'),
                     name='Needs Goal'
                 ),
                 go.Scatter(
                     x=x_data,
                     y=wants_baseline,
                     mode='lines+markers',
-                    marker=dict(color='orange'),
+                    marker=dict(color='#FFDAB9'),
                     name='Wants Goal'
                 ),
                 go.Scatter(
                     x=x_data,
                     y=savings_baseline,
                     mode='lines+markers',
-                    marker=dict(color='green'),
+                    marker=dict(color='#C1FFC1'),
                     name='Savings Goal'
                 ),
                 go.Scatter(
                     x=x_data,
                     y=needs_actual,
                     mode='lines+markers',
-                    marker=dict(color='#ADD8E6'),
+                    marker=dict(color='blue'),
                     name='Actual Needs Spending'
                 ),
                 go.Scatter(
                     x=x_data,
                     y=wants_actual,
                     mode='lines+markers',
-                    marker=dict(color='red'),
+                    marker=dict(color='orange'),
                     name='Actual Wants Spending'
                 ),
                 go.Scatter(
                     x=x_data,
                     y=savings_actual,
                     mode='lines+markers',
-                    marker=dict(color='#00FF00'),
+                    marker=dict(color='#00DF00'),
                     name='Actual Savings'
                 )
             ],

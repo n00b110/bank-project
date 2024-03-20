@@ -16,11 +16,11 @@
     <!-- navbar -->
     <div class="container" style="padding-left: 20px; padding-right: 20px;">
       <nav class="navbar navbar-expand-lg" style="border-radius: 10px;">
-        <div class="container-fluid" style="background-color: blanchedalmond; border-radius: 10px;">
+        <div class="container-fluid" style="background-color: rgb(219, 165, 7); border-radius: 10px;">
           <!--Title Img-->
-          <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
+          <a class="navbar-brand fw-bold" href="{{ url_for('index') }}" style="color: rgb(7, 72, 91);">
             <img src="{{url_for('static', filename='headerimage.jpg')}}" alt="Bootstrap" width="45" height="45">
-            CS-451R Project</a>
+            50/30/20 Budget Pal</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -43,7 +43,7 @@
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Login
                 </a>
-                <ul class="dropdown-menu" style="background-color: blanchedalmond;">
+                <ul class="dropdown-menu" style="background-color: rgb(219, 165, 7);">
                   <li><a class="dropdown-item" href="{{ url_for('index') }}">Login</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('settings') }}">User Settings</a></li>
                   <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
