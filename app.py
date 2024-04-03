@@ -103,7 +103,8 @@ recent_month_pie_chart.layout = html.Div(children=[
             'layout': go.Layout(
                 title='Your Most Recent Month',
                 paper_bgcolor='rgb(174, 203, 157)')
-        }
+        },
+        config={'displaylogo': False}
     )
 ])
 
@@ -128,7 +129,8 @@ last_quarter_pie_chart.layout = html.Div(children=[
             'layout': go.Layout(
                 title='Your Last Quarter',
                 paper_bgcolor='rgb(174, 203, 157)')
-        }
+        },
+        config={'displaylogo': False}
     )
 ])
 
@@ -153,7 +155,8 @@ last_year_pie_chart.layout = html.Div(children=[
             'layout': go.Layout(
                 title='Your Last Year',
                 paper_bgcolor='rgb(174, 203, 157)')
-        }
+        },
+        config={'displaylogo': False}
     )
 ])
 
@@ -178,7 +181,8 @@ life_time_pie_chart.layout = html.Div(children=[
             'layout': go.Layout(
                 title='Your Lifetime Budgeting',
                 paper_bgcolor='rgb(174, 203, 157)')
-        }
+        },
+        config={'displaylogo': False}
     )
 ])
 
@@ -194,6 +198,13 @@ needs_actual = [60, 55, 65, 50, 55]
 wants_actual = [30, 45, 20, 45, 25]
 savings_actual = [10, 0, 15, 5, 20]
 
+formatted_needs_baseline_values = ['${:,.2f}'.format(value) for value in needs_baseline]
+formatted_wants_baseline_values = ['${:,.2f}'.format(value) for value in wants_baseline]
+formatted_savings_baseline_values = ['${:,.2f}'.format(value) for value in savings_baseline]
+formatted_needs_actual_values = ['${:,.2f}'.format(value) for value in needs_actual]
+formatted_wants_actual_values = ['${:,.2f}'.format(value) for value in wants_actual]
+formatted_savings_actual_values = ['${:,.2f}'.format(value) for value in savings_actual]
+
 # Define layout of the app
 goals_line_graph.layout = html.Div(children=[
     dcc.Graph(
@@ -205,42 +216,54 @@ goals_line_graph.layout = html.Div(children=[
                     y=needs_baseline,
                     mode='lines+markers',
                     marker=dict(color='#ADD8E6'),
-                    name='Needs Goal'
+                    name='Needs Goal',
+                    hoverinfo= 'x+text',
+                    text= formatted_needs_baseline_values
                 ),
                 go.Scatter(
                     x=x_data,
                     y=wants_baseline,
                     mode='lines+markers',
                     marker=dict(color='#FFDAB9'),
-                    name='Wants Goal'
+                    name='Wants Goal',
+                    hoverinfo= 'x+text',
+                    text= formatted_wants_baseline_values
                 ),
                 go.Scatter(
                     x=x_data,
                     y=savings_baseline,
                     mode='lines+markers',
                     marker=dict(color='#C1FFC1'),
-                    name='Savings Goal'
+                    name='Savings Goal',
+                    hoverinfo= 'x+text',
+                    text= formatted_savings_baseline_values
                 ),
                 go.Scatter(
                     x=x_data,
                     y=needs_actual,
                     mode='lines+markers',
                     marker=dict(color='blue'),
-                    name='Actual Needs Spending'
+                    name='Actual Needs Spending',
+                    hoverinfo= 'x+text',
+                    text= formatted_needs_actual_values
                 ),
                 go.Scatter(
                     x=x_data,
                     y=wants_actual,
                     mode='lines+markers',
                     marker=dict(color='orange'),
-                    name='Actual Wants Spending'
+                    name='Actual Wants Spending',
+                    hoverinfo= 'x+text',
+                    text= formatted_wants_actual_values
                 ),
                 go.Scatter(
                     x=x_data,
                     y=savings_actual,
                     mode='lines+markers',
                     marker=dict(color='#00DF00'),
-                    name='Actual Savings'
+                    name='Actual Savings',
+                    hoverinfo= 'x+text',
+                    text= formatted_savings_actual_values
                 )
             ],
             'layout': go.Layout(
@@ -248,7 +271,9 @@ goals_line_graph.layout = html.Div(children=[
                 xaxis=dict(title='Months'),
                 yaxis=dict(title='Percent of Spending', range=[0, 100])
             )
-        }
+        },
+        config={
+            'displaylogo': False}
     )
 ])
 
