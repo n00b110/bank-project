@@ -72,3 +72,20 @@ body {
     justify-content: flex-end;
     }
 
+.container-dashboard-outer {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.container-dashboard {
+    max-width: 800px;
+    margin: auto;
+}
+
+.stats-box {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
