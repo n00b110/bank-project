@@ -1,14 +1,40 @@
 from flask import Flask, redirect, url_for, render_template, request, session
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
 from datetime import timedelta
 import dash
 from dash import dcc, html
 import plotly.graph_objs as go
+
+
+class Base(DeclarativeBase):
+    pass
 
 app = Flask(__name__)
 # Secret key for session encryption
 app.secret_key = "budgeting101"
 # Lifetime of the permenent session
 app.permanent_session_lifetime = timedelta(minutes=5)
+db = SQLAlchemy(model_class=Base)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
+db.init_app(app)
+
+
+
+class User(db.Model):
+    __tablename__ = 'users'
+    username = db.Column(db.String(80), primary_key=True, nullable=False)
+    password = db.Column(db.String(80), nullable=False)
+
+    def __repr__(self):
+        return f"User(username='{self.username}', age={self.age})"
+
+
+
+with app.app_context():
+    db.create_all()
+
+
 
 @app.route('/', methods=["POST","GET"])
 def index():
