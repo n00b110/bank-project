@@ -31,11 +31,6 @@ class User(db.Model):
 
 
 
-with app.app_context():
-    db.create_all()
-
-
-
 @app.route('/', methods=["POST","GET"])
 def index():
     # Login
@@ -81,13 +76,6 @@ def settings():
     else:
         return redirect(url_for("index"))
 
-# @app.route('/test/')
-# def test():
-#     if "user" in session:
-#         user = session["user"]
-#         return f"<h1>{user}</h1>"
-#     else:
-#         return redirect(url_for("index"))
     
 @app.route("/forgotpassword/")
 def fPassword():
