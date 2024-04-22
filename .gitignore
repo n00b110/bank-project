@@ -1,2 +1,5 @@
-venv/
+.venv/
 __pycache__/app.cpython-37.pyc
+static/20percentold.PNG
+static/30percentold.PNG
+static/50percentold.PNG

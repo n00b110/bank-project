@@ -1,86 +1,219 @@
 {% extends "base.html" %}
 
-{% block title %} {% endblock %}
+{% block title %}- Budget{% endblock %}
+
 {% block body%}
-<div>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Expense Tracker</title>
-    </head>
-    <body>
-        <div class="container mt-5">
-            <h1 class="text-center">Expense Tracker</h1>
-            <form>
-                <div class="form-group">
-                    <label for="monthlyIncome">Monthly Income:</label>
-                    <input type="number" class="form-control" id="monthlyIncome" placeholder="Enter your income">
+<section class="py-5" style="height: 88vh;">
+    <div class="container mt-5">
+        <h1 class="text-center text-success mb-4">Getting started with Balanced Budgets</h1>
+        <div class="text-center mb-4" >
+            <h3>
+                Getting started is easy! Use the buttons below to input your monthly spending. 
+                Try to get as close as you can for the most accurate budgeting results.
+            </h3>
+        </div>
+        <!-- First Pop-up Card -->
+        <div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="modal1Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title text-success" id="modal1Label">50% - Needs</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <small class="form-text text-muted">Please enter only dollar amounts (e.g., 100.00)</small>
+                        <!-- Form for First Card -->
+                        <form action="/budget" method="post">
+                            <div class="form-group mb-4">
+                                <label for="budget1">Monthly Rent</label>
+                                <input type="text" class="form-control" id="rent" name="budget1" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget1">Utilities</label>
+                                <input type="text" class="form-control" id="utilities" name="budget1" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget1">Groceries</label>
+                                <input type="text" class="form-control" id="groceries" name="budget1" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget1">Car Payment</label>
+                                <input type="text" class="form-control" id="carPayment" name="budget1" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget1">Transportaion</label>
+                                <input type="text" class="form-control" id="transportation" name="budget1" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget1">Other (any other needs, eg. Health Costs)</label>
+                                <input type="text" class="form-control" id="otherNeeds" name="budget1" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Submit</button>    
+                        </form>
+                        <!-- Separate form for reset action -->
+                        <form action="/budget" method="post">
+                            <button type="submit" class="btn btn-danger" name="reset_budget1">Reset Needs</button>
+                        </form>
+                    </div>
                 </div>
-              <h1 class="text-center">50% Needs</h1>
-                <div class="form-group">
-                    <label for="housing">Housing</label>
-                    <input type="number" class="form-control" id="housing" placeholder="Enter housing expenses">
+            </div>
+        </div>
+
+        <!-- Second Pop-up Card -->
+        <div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="modal2Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title text-success" id="modal2Label">30% - Wants</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <small class="form-text text-muted">Please enter only dollar amounts (e.g., 100.00)</small>
+                        <!-- Form for First Card -->
+                        <form action="/budget" method="post">
+                            <div class="form-group mb-4">
+                                <label for="budget2">Dining Out</label>
+                                <input type="text" class="form-control" id="dining" name="budget2" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget2">Entertainment</label>
+                                <input type="text" class="form-control" id="entertainment" name="budget2" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget2">Hobbies</label>
+                                <input type="text" class="form-control" id="hobbies" name="budget2" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget2">Other (other wants, eg. Misc Shopping)</label>
+                                <input type="text" class="form-control" id="otherWants" name="budget2" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                        </form>
+                        <!-- Separate form for reset action -->
+                        <form action="/budget" method="post">
+                            <button type="submit" class="btn btn-danger" name="reset_budget2">Reset Wants</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="groceries">Groceries</label>
-                    <input type="number" class="form-control" id="groceries" placeholder="Enter grocery expenses">
+            </div>
+        </div>
+
+        <!-- Third Popup Card -->
+        <div class="modal fade" id="modal3" tabindex="-1" role="dialog" aria-labelledby="modal3Label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title text-success" id="modal3Label">20% - Savings</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <small class="form-text text-muted">Please enter only dollar amounts (e.g., 100.00)</small>
+                        <!-- Form for First Card -->
+                        <form action="/budget" method="post">
+                            <div class="form-group mb-4">
+                                <label for="budget3">Retirement</label>
+                                <input type="text" class="form-control" id="retirement" name="budget3" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget3">Emergency Fund</label>
+                                <input type="text" class="form-control" id="emergencyFund" name="budget3" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget3">Investments</label>
+                                <input type="text" class="form-control" id="investments" name="budget3" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="budget3">Other (other savings, eg. College Fund)</label>
+                                <input type="text" class="form-control" id="otherSavings" name="budget3" value="0.00" pattern="\d+(\.\d{2})?" min="0.00" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+                        </form>
+                        <!-- Separate form for reset action -->
+                        <form action="/budget" method="post">
+                            <button type="submit" class="btn btn-danger" name="reset_budget3">Reset Savings</button>
+                        </form>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="bills">Bills and Utilities</label>
-                    <input type="number" class="form-control" id="bills" placeholder="Enter bills and utilities expenses">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">50% - Needs</div>
+                <div class="card-body text-center">
+                    <p>Allocate 50% of your income to essential expenses like rent, utilities, and groceries.</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal1">Add Needs</button>
+                    <!-- Shows total from Needs form -->
+                    <h5 class="mt-3 text-success">Total Needs: ${{ budget1_total }}</h5>
+                    
                 </div>
-                <div class="form-group">
-                  <label for="health costs">Health Costs</label>
-                  <input type="number" class="form-control" id="bills" placeholder="Enter health expenses">
+            </div>
+            </div>
+            <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">30% - Wants</div>
+                <div class="card-body text-center">
+                    <p>Allocate 30% of your income to discretionary spending, such as entertainment and dining out.</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal2">Add Wants</button>
+                    <!-- Shows total for Wants form -->
+                    <h5 class="mt-3 text-success">Total Wants: ${{ budget2_total }}</h5>
+                    
                 </div>
-                <div class="form-group">
-                  <label for="car payments">Car Payments</label>
-                  <input type="number" class="form-control" id="bills" placeholder="Enter car payment expenses">
+            </div>
+            </div>
+            <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header">20% - Savings</div>
+                <div class="card-body text-center">
+                    <p>Allocate 20% of your income to savings and debt repayment.</p>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal3">Add Savings</button>
+                    <!-- Shows total for Savings form -->
+                    <h5 class="mt-3 text-success">Total Savings: ${{ budget3_total }}</h5>
+                    
+
                 </div>
-                <div class="form-group">
-                  <label for="transportation">Transportation</label>
-                  <input type="number" class="form-control" id="bills" placeholder="Enter Transportation expenses">
-               </div>
-    
-              <h1 class="text-center">30% Wants</h1>
-              <div class="form-group">
-                  <label for="eating out ">Eating Out</label>
-                  <input type="number" class="form-control" id="housing" placeholder="Enter Eating out expenses">
-              </div>
-              <div class="form-group">
-                  <label for="hobbies">Hobbies</label>
-                  <input type="number" class="form-control" id="groceries" placeholder="Enter Hobbies expenses">
-              </div>
-              <div class="form-group">
-                  <label for="shopping">Shopping</label>
-                  <input type="number" class="form-control" id="bills" placeholder="Enter shopping expenses">
-              </div>
-              <div class="form-group">
-                  <label for="entertainment">Entertainment</label>
-                  <input type="number" class="form-control" id="bills" placeholder="Enter entertainment expenses">
-              </div>
-              <h1 class="text-center">20% Savings</h1>
-              <div class="form-group">
-                  <label for="emergency fund">Emergency Fund</label>
-                  <input type="number" class="form-control" id="housing" placeholder="Enter emergency fund expenses">
-              </div>
-              <div class="form-group">
-                  <label for="retirement">Retirement</label>
-                  <input type="number" class="form-control" id="groceries" placeholder="Enter retirement savings">
-              </div>
-              <div class="form-group">
-                  <label for="investments">Investments</label>
-                  <input type="number" class="form-control" id="bills" placeholder="Enter investment expenses">
-              </div>
-                
-                <button type="submit" class="btn btn-primary" style="background-color: rgb(219, 165, 7);">Submit</button>
+            </div>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <p>Press the button below to start saving!</p>
+            <form action="/submit_budget" method="post">
+                <input type="hidden" name="budget1_total" value="{{ budget1_total }}">
+                <input type="hidden" name="budget2_total" value="{{ budget2_total }}">
+                <input type="hidden" name="budget3_total" value="{{ budget3_total }}">
+                <button type="button" class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#confirmationModal">Submit Budget</button>
+                <!-- Modal -->
+                <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        Are you sure you want to submit the budget?
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </form>
         </div>
-    
-        
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    </body>
-</div>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}
