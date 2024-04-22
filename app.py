@@ -22,13 +22,13 @@ db.init_app(app)
 
 
 
-# class User(db.Model):
-#     __tablename__ = 'users'
-#     username = db.Column(db.String(80), primary_key=True, nullable=False)
-#     password = db.Column(db.String(80), nullable=False)
+class User(db.Model):
+    __tablename__ = 'users'
+    username = db.Column(db.String(80), primary_key=True, nullable=False)
+    password = db.Column(db.String(80), nullable=False)
 
-#     def __repr__(self):
-#         return f"User(username='{self.username}', age={self.age})"
+    def __repr__(self):
+        return f"User(username='{self.username}', age={self.age})"
 
 #APP ROUTES
 
