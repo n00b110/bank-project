@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from datetime import timedelta
@@ -14,35 +14,29 @@ app = Flask(__name__)
 # Secret key for session encryption
 app.secret_key = "budgeting101"
 # Lifetime of the permenent session
-app.permanent_session_lifetime = timedelta(minutes=5)
+app.permanent_session_lifetime = timedelta(days=5)
+
 db = SQLAlchemy(model_class=Base)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 db.init_app(app)
 
 
 
-class User(db.Model):
-    __tablename__ = 'users'
-    username = db.Column(db.String(80), primary_key=True, nullable=False)
-    password = db.Column(db.String(80), nullable=False)
+# class User(db.Model):
+#     __tablename__ = 'users'
+#     username = db.Column(db.String(80), primary_key=True, nullable=False)
+#     password = db.Column(db.String(80), nullable=False)
 
-    def __repr__(self):
-        return f"User(username='{self.username}', age={self.age})"
+#     def __repr__(self):
+#         return f"User(username='{self.username}', age={self.age})"
 
+#APP ROUTES
 
-
-@app.route('/', methods=["POST","GET"])
+@app.route('/')
 def index():
-    # Login
-    if request.method == "POST":
-        session.permanent = True
-        user = request.form["emailName"]
-        session["user"] = user
-        return redirect(url_for("dashboard"))
-    else:
-        if "user" in session:
-            return redirect(url_for('dashboard'))
-        return render_template("index.html")
+    if "user" in session:
+        return redirect(url_for('dashboard'))
+    return render_template("index.html")
 
 @app.route('/dashboard/')
 def dashboard():
@@ -52,11 +46,71 @@ def dashboard():
     else:
         return redirect(url_for("index"))
 
-@app.route('/budget/')
+@app.route('/budget/', methods=['GET', 'POST'])
 def budget():
     if "user" in session:
         user = session["user"]
-        return render_template("budget.html")
+        if "totals" not in session:
+            # Initialize dictionary to store totals
+            session["totals"] = {'budget1': 0, 'budget2': 0, 'budget3': 0}
+        
+        if request.method == 'POST':
+
+            # Reset totals to zero if reset button is clicked
+            if 'reset_budget1' in request.form:
+                session["totals"]['budget1'] = 0
+                return render_template('budget.html', 
+                                budget1_total=format(session["totals"]['budget1'], ".2f"),
+                               budget2_total=format(session["totals"]['budget2'], ".2f"),
+                               budget3_total=format(session["totals"]['budget3'], ".2f"))
+            if 'reset_budget2' in request.form:
+                session["totals"]['budget2'] = 0
+                return render_template('budget.html', 
+                                budget1_total=format(session["totals"]['budget1'], ".2f"),
+                               budget2_total=format(session["totals"]['budget2'], ".2f"),
+                               budget3_total=format(session["totals"]['budget3'], ".2f"))
+            if 'reset_budget3' in request.form:
+                session["totals"]['budget3'] = 0
+                return render_template('budget.html', 
+                                budget1_total=format(session["totals"]['budget1'], ".2f"),
+                               budget2_total=format(session["totals"]['budget2'], ".2f"),
+                               budget3_total=format(session["totals"]['budget3'], ".2f"))
+            
+            # Update totals with submitted form data
+            for key in session["totals"].keys():
+                session["totals"][key] += sum(float(value) for value in request.form.getlist(key))
+
+            # For now just printing the data to the console
+            print(session["totals"])
+
+        return render_template('budget.html', 
+                               budget1_total=format(session["totals"]['budget1'], ".2f"),
+                               budget2_total=format(session["totals"]['budget2'], ".2f"),
+                               budget3_total=format(session["totals"]['budget3'], ".2f"))
+    else:
+        return redirect(url_for("index"))
+
+@app.route('/submit_budget', methods=['POST'])
+def submit_budget():
+    if "user" in session:
+        # Retrieve the totals from the form data
+        budget1_total = float(request.form['budget1_total'])
+        budget2_total = float(request.form['budget2_total'])
+        budget3_total = float(request.form['budget3_total'])
+        
+        # Print or process the budget totals (THIS IS WHERE THE TOTALS GO INTO THE DATABASE)
+        print("Budget 1 Total:", budget1_total) # 50% Needs
+        print("Budget 2 Total:", budget2_total) # 30% Wants
+        print("Budget 3 Total:", budget3_total) # 20% Savings
+        
+        #Zero budget totals out after inserting into table
+        session["totals"]['budget1'] = 0
+        session["totals"]['budget2'] = 0
+        session["totals"]['budget3'] = 0
+
+        # Redirect to goals page
+        flash("Your budget totals have been successfully saved!")
+        return redirect(url_for("goals"))
     else:
         return redirect(url_for("index"))
 
@@ -68,33 +122,69 @@ def goals():
     else:
         return redirect(url_for("index"))
 
-@app.route('/settings/')
-def settings():
-    if "user" in session:
-        user = session["user"]
-        return render_template('settings.html')
+@app.route("/login/", methods=["POST","GET"])
+def login():
+    if request.method == "POST":
+        session.permanent = True
+        user = request.form["emailName"]
+        session["user"] = user
+        flash("You've been logged in!")
+        return redirect(url_for("dashboard"))
     else:
-        return redirect(url_for("index"))
+        if "user" in session:
+            user = session["user"]
+            flash("Looks like you're already logged in!")
+            return redirect(request.referrer)    
+        return render_template('login.html')
 
-    
-@app.route("/forgotpassword/")
+@app.route("/forgotpassword/", methods=["POST","GET"])
 def fPassword():
+    if request.method == "POST":
+        email = request.form.get("email_forgot")
+        
+        # Use email variable to send out email
+
+        print("Users Email: {}".format(email))
+
+        flash("Password reset email sent")
     return render_template('fPassword.html')
 
-@app.route("/login/")
-def login():
-    if "user" in session:
-        user = session["user"]
-        return render_template('login.html')
+@app.route("/signup/", methods=["POST","GET"])
+def signup():
+    if request.method == "POST":
+        name = request.form.get("real_name")
+        email = request.form.get("user_email")
+        password = request.form.get("user_password")
+        repeat_password = request.form.get("user_password2")
+        
+        # Check if passwords match
+        if password != repeat_password:
+            flash("Passwords do not match. Please try again.")
+            return render_template('signup.html')
+        
+        # Proceed with signup if passwords match
+        # THIS IS WHERE DATABASE ENTRY WOULD OCCUR
+
+        print("Users Name: {} Users Email: {} Users Password: {}".format(name, email, password))
+        
+        flash("You have successfully registered!")
+        return redirect(url_for('dashboard'))
     else:
-        return redirect("index")
+        return render_template('signup.html')
 
 @app.route("/logout/")
 def logout():
     if "user" in session:
         user = session["user"]
-    session.pop("user", None)
-    return redirect(url_for("index"))
+        session.pop("user", None)
+        flash("You've been logged out!")
+        return redirect(url_for("index"))
+    else:
+        flash("You are not logged in yet!")
+        return redirect(request.referrer)
+
+# Start of Dash code for reports page
+# ----------------------------------------------------------------------------------
 
 recent_month_pie_chart = dash.Dash(__name__, server=app, url_base_pathname='/rmpc/')
 
@@ -116,7 +206,7 @@ recent_month_pie_chart.layout = html.Div(children=[
                 )],
             'layout': go.Layout(
                 title='Your Most Recent Month',
-                paper_bgcolor='rgb(174, 203, 157)')
+                paper_bgcolor='#f2f2f2')
         },
         config={'displaylogo': False}
     )
@@ -142,7 +232,7 @@ last_quarter_pie_chart.layout = html.Div(children=[
                 )],
             'layout': go.Layout(
                 title='Your Last Quarter',
-                paper_bgcolor='rgb(174, 203, 157)')
+                paper_bgcolor='#f2f2f2')
         },
         config={'displaylogo': False}
     )
@@ -168,7 +258,7 @@ last_year_pie_chart.layout = html.Div(children=[
                 )],
             'layout': go.Layout(
                 title='Your Last Year',
-                paper_bgcolor='rgb(174, 203, 157)')
+                paper_bgcolor='#f2f2f2')
         },
         config={'displaylogo': False}
     )
@@ -194,7 +284,7 @@ life_time_pie_chart.layout = html.Div(children=[
                 )],
             'layout': go.Layout(
                 title='Your Lifetime Budgeting',
-                paper_bgcolor='rgb(174, 203, 157)')
+                paper_bgcolor='#f2f2f2')
         },
         config={'displaylogo': False}
     )
@@ -283,7 +373,8 @@ goals_line_graph.layout = html.Div(children=[
             'layout': go.Layout(
                 title='Another Look at the Data',
                 xaxis=dict(title='Months'),
-                yaxis=dict(title='Percent of Spending', range=[0, 100])
+                yaxis=dict(title='Percent of Spending', range=[0, 100]),
+                paper_bgcolor='#f2f2f2'
             )
         },
         config={

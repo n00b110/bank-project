@@ -1,23 +1,51 @@
 {% extends "base.html" %}
 
-{% block title %} {% endblock %}
+{% block title %} - Login{% endblock %}
 {% block body%}
-<div class="col-sm-4" style="align-content: center;">
-    <form action="#" method="post" style="border: 2px solid black; padding-left: 20px; padding-right: 20px; padding-top: 10px;">
-      <div class="mb-3" style="text-align: left;">
-        <label for="inputEmail" class="form-label">Email address</label>
-        <input name="emailName" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" style="border: 1px solid black; background-color: blanchedalmond;">
+<section class="" style="background-color: #eee; height: 88vh;">
+  <div class="container h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-12 col-xl-11">
+        <div class="card text-black" style="border-radius: 25px;">
+          <div class="card-body p-md-5">
+            <div class="row justify-content-center">
+
+              <h1 class="text-center text-success mb-4">Welcome to Balanced Budgets</h1>
+              <h3 class="text-center mb-4">Sign in to start saving!</h3>
+
+              <div style="width: 50%; margin: auto;">
+                <form action="#" method="post">
+                  <!-- Email input -->
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input name="emailName" type="email" id="inputEmail" class="form-control" />
+                    <label class="form-label" for="inputEmail">Email address</label>
+                  </div>
+
+                  <!-- Password input -->
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input name="pw" type="password" id="inputPassword" class="form-control" />
+                    <label class="form-label" for="inputPassword">Password</label>
+                  </div>
+
+                  <!-- 2 column grid layout for inline styling -->
+                  <div class="row mb-4">
+                    <div class="col d-flex justify-content-center">
+                      <!-- Submit Button -->
+                      <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Sign in</button>
+                    </div>
+
+                    <div class="col">
+                      <!-- Simple link -->
+                      <a href="{{ url_for('fPassword') }}">Forgot password?</a>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="mb-3" style="text-align: left;">
-        <label for="inputPassword" class="form-label">Password</label>
-        <input name="pw" type="password" class="form-control" id="inputPassword" style="border: 1px solid black; background-color: blanchedalmond;">
-      </div>
-      <button type="submit" class="btn btn-primary" style="background-color: #ffd700;">Login</button>
-      <div class="mb-3 form-check;" style="padding-top: 5px;">
-        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ url_for('fPassword') }}">
-          Forgot Password?
-        </a>
-      </div>
-    </form>
-</div>
+    </div>
+  </div>
+</section>
 {% endblock %}
