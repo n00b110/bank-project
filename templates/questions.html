@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}- Security Questions{% endblock %}
+{% block body %}
+<section class="" style="background-color: #eee; height: 88vh;">
+    <div class="container h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-lg-12 col-xl-11">
+          <div class="card text-black" style="border-radius: 25px;">
+            <div class="card-body p-md-5">
+              <div class="row justify-content-center">
+  
+                <h1 class="text-center text-success mb-4">Security Questions</h1>
+                <h3 class="text-center mb-4">Please pick 2 questions below to complete registration</h3>
+  
+                <div style="width: 50%; margin: auto;">
+                    <form method="POST" action="/submit_answers">
+
+                        <!-- Security Question 1 -->
+                        <div class="dropdown">
+                            <label for="security_question1">Choose a Security Question:</label>
+                            <select class="form-control mb-2" id="security_question1" name="security_question1">
+                                <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                                <option value="What city were you born in?">What city were you born in?</option>
+                                <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+                                <option value="What was the make and model of your first car?">What was the make and model of your first car?</option>
+                                <option value="What was the name of your favorite teacher in high school?">What was the name of your favorite teacher in high school?</option>
+                                <option value="What was the last name of your childhood best friend?">What was the last name of your childhood best friend?</option>
+
+                            </select>
+                        </div>
+                        
+                        <!-- Security Answer 1 -->
+                        <div class="form-group">
+                            <label for="security_answer1">Answer:</label>
+                            <input type="text" class="form-control mb-4" id="security_answer1" name="security_answer1">
+                        </div>
+
+                        <!-- Security Question 2 -->
+                        <div class="form-group">
+                            <label for="security_question2">Choose a Security Question:</label>
+                            <select class="form-control mb-2" id="security_question2" name="security_question2">
+                                <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                                <option value="What city were you born in?">What city were you born in?</option>
+                                <option value="What is the name of your first pet?">What is the name of your first pet?</option>
+                                <option value="What was the make and model of your first car?">What was the make and model of your first car?</option>
+                                <option value="What was the name of your favorite teacher in high school?">What was the name of your favorite teacher in high school?</option>
+                                <option value="What was the last name of your childhood best friend?">What was the last name of your childhood best friend?</option>
+                                
+                            </select>
+                        </div>
+
+                        <!-- Security Answer 2 -->
+                        <div class="form-group">
+                            <label for="security_answer2">Answer:</label>
+                            <input type="text" class="form-control mb-4" id="security_answer2" name="security_answer2">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

@@ -168,9 +168,27 @@ def signup():
         print("Users Name: {} Users Email: {} Users Password: {}".format(name, email, password))
         
         flash("You have successfully registered!")
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('questions'))
     else:
         return render_template('signup.html')
+    
+@app.route("/questions/")
+def questions():
+    return render_template('questions.html')
+    
+@app.route("/submit_answers/", methods=['POST'])
+def submit_answers():
+    security_question1 = request.form['security_question1']
+    security_answer1 = request.form['security_answer1']
+    security_question2 = request.form['security_question2']
+    security_answer2 = request.form['security_answer2']
+    
+    # STORE QUESTIONS AND ANSWERS IN DATABASE
+    print("SQ1: {} ANS1: {}".format(security_question1, security_answer1))
+    print("SQ2: {} ANS2: {}".format(security_question2, security_answer2))
+
+    flash("You have successfully registered! Please login to continue.")
+    return redirect(url_for('login'))
 
 @app.route("/logout/")
 def logout():
