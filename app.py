@@ -90,30 +90,6 @@ def budget():
     else:
         return redirect(url_for("index"))
 
-@app.route('/submit_budget', methods=['POST'])
-def submit_budget():
-    if "user" in session:
-        # Retrieve the totals from the form data
-        budget1_total = float(request.form['budget1_total'])
-        budget2_total = float(request.form['budget2_total'])
-        budget3_total = float(request.form['budget3_total'])
-        
-        # Print or process the budget totals (THIS IS WHERE THE TOTALS GO INTO THE DATABASE)
-        print("Budget 1 Total:", budget1_total) # 50% Needs
-        print("Budget 2 Total:", budget2_total) # 30% Wants
-        print("Budget 3 Total:", budget3_total) # 20% Savings
-        
-        #Zero budget totals out after inserting into table
-        session["totals"]['budget1'] = 0
-        session["totals"]['budget2'] = 0
-        session["totals"]['budget3'] = 0
-
-        # Redirect to goals page
-        flash("Your budget totals have been successfully saved!")
-        return redirect(url_for("goals"))
-    else:
-        return redirect(url_for("index"))
-
 @app.route('/goals/')
 def goals():
     if "user" in session:
@@ -176,11 +152,27 @@ def signup():
     else:
         return render_template('signup.html')
     
-@app.route("/questions/")
+@app.route("/questions/", methods=["POST","GET"])
 def questions():
-    if "user" in session:
-        user = session["user"]
-    return render_template('questions.html')
+    if request.method == "POST":
+        security_question1 = request.form['security_question1']
+        security_answer1 = request.form['security_answer1']
+        security_question2 = request.form['security_question2']
+        security_answer2 = request.form['security_answer2']
+    
+        if security_question1 == security_question2:
+            flash("For enhanced security, please select two distinct security questions.")
+            return render_template('questions.html')
+
+        # STORE QUESTIONS AND ANSWERS IN DATABASE
+        print("SQ1: {} ANS1: {}".format(security_question1, security_answer1))
+        print("SQ2: {} ANS2: {}".format(security_question2, security_answer2))
+
+        flash("You have successfully registered! Please login to continue.")
+        return redirect(url_for('login'))
+
+    else:
+        return render_template('questions.html')
     
 @app.route("/submit_answers/", methods=['POST'])
 def submit_answers():
