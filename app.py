@@ -178,6 +178,8 @@ def signup():
     
 @app.route("/questions/")
 def questions():
+    if "user" in session:
+        user = session["user"]
     return render_template('questions.html')
     
 @app.route("/submit_answers/", methods=['POST'])
@@ -187,6 +189,10 @@ def submit_answers():
     security_question2 = request.form['security_question2']
     security_answer2 = request.form['security_answer2']
     
+    if security_question1 == security_question2:
+        flash("For enhanced security, please select two distinct security questions.")
+        return render_template('questions.html')
+
     # STORE QUESTIONS AND ANSWERS IN DATABASE
     print("SQ1: {} ANS1: {}".format(security_question1, security_answer1))
     print("SQ2: {} ANS2: {}".format(security_question2, security_answer2))
