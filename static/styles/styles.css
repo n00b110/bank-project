@@ -4,7 +4,6 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensure the body covers the full height of the viewport */
 }
 
     .navbar {
@@ -42,7 +41,7 @@ body {
 }
 
 .container-dashboard {
-    max-width: 800px;
+    max-width: 60%;
     margin: auto;
 }
 
@@ -62,8 +61,8 @@ img {
 footer {
     background-color: #28a745; /* Green background color */
     color: #fff; /* White text color */
-    padding: 10px 0; /* Adjust padding as needed */
-
+    padding: 20px; /* Adjust padding as needed */
     bottom: 0; /* Position at the bottom of the viewport */
     width: 100%; /* Full width */
+    position: relative;
   }

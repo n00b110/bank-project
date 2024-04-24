@@ -1,44 +1,45 @@
 {% extends "base.html" %}
 
 {% block title %} - Dashboard{% endblock %}
-{% block body%}
-<section class="py-5" style="height: 88vh;">
+{% block body %}
+<section class="py-5">
     <div class="container-dashboard-outer">
         <div class="container-dashboard">
             <h1 class="header text-success" style="text-align: center; margin-bottom: 20px;">Budgeting Dashboard</h1>
-
             <div class="row">
                 <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5>50% - Needs</h5>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>50% - Needs</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <p>Allocate 50% of your income to essential expenses like rent, utilities, groceries, etc.</p>
+                            <img src="/static/50percent.png" alt="50%">
+                        </div>
                     </div>
-                    <div class="card-body text-center">
-                        <p>Allocate 50% of your income to essential expenses like rent, utilities, groceries, etc.</p>
-                    </div>
-                </div>
                 </div>
 
-
                 <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5>30% - Wants</h5>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>30% - Wants</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <p>Allocate 30% of your income to discretionary spending, such as entertainment and dining out.</p>
+                            <img src="/static/30percent.png" alt="30%">
+                        </div>
                     </div>
-                    <div class="card-body text-center">
-                        <p>Allocate 30% of your income to discretionary spending, such as entertainment and dining out.</p>
-                    </div>
-                </div>
                 </div>
                 <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5>20% - Savings</h5>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5>20% - Savings</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <p>Allocate 20% of your income to savings and debt repayment.</p>
+                            <img src="/static/20percent.png" alt="20%">
+                        </div>
                     </div>
-                    <div class="card-body text-center">
-                        <p>Allocate 20% of your income to savings and debt repayment.</p>
-                    </div>
-                </div>
                 </div>
             </div>
 
@@ -54,10 +55,12 @@
                         <p>By following this budgeting strategy, you can achieve better financial stability, reduce stress about
                             money, and work towards your long-term financial objectives.</p>
                         <p>Start using the 50/30/20 budget plan today and take control of your finances!</p>
+                        <img src="/static/login.png" alt="wallet" style="width: 50%; height: auto;">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 {% endblock %}
