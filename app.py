@@ -5,6 +5,7 @@ from datetime import timedelta
 import dash
 from dash import dcc, html
 import plotly.graph_objs as go
+from database import create_new_user, checkLogin, getLastMonth, getLastQuarter, getLastYear, getLifeTime, getRecoveryQuestions, getLineGraphInfo, checkRecoveryAnswers
 
 
 class Base(DeclarativeBase):
@@ -94,6 +95,7 @@ def budget():
 def goals():
     if "user" in session:
         user = session["user"]
+        update_rmpc_pie_chart(user)
         return render_template('goals.html')
     else:
         return redirect(url_for("index"))
@@ -101,11 +103,16 @@ def goals():
 @app.route("/login/", methods=["POST","GET"])
 def login():
     if request.method == "POST":
-        session.permanent = True
         user = request.form["emailName"]
-        session["user"] = user
-        flash("You've been logged in!")
-        return redirect(url_for("dashboard"))
+        password = request.form["pw"]
+        if checkLogin(user, password) == True:
+            session.permanent = True
+            session["user"] = user
+            flash("You've been logged in!")
+            return redirect(url_for("dashboard"))
+        else:
+            flash("Incorrect Username or Password")
+            return render_template('login.html')
     else:
         if "user" in session:
             user = session["user"]
@@ -148,13 +155,15 @@ def signup():
         print("Users Name: {} Users Email: {} Users Password: {}".format(name, email, password))
         
         flash("You have successfully registered!")
-        return redirect(url_for('questions'))
+        return redirect(url_for('questions', email = email, password = password))
     else:
         return render_template('signup.html')
     
 @app.route("/questions/", methods=["POST","GET"])
 def questions():
     if request.method == "POST":
+        email = request.args.get('email')
+        password = request.args.get('password')
         security_question1 = request.form['security_question1']
         security_answer1 = request.form['security_answer1']
         security_question2 = request.form['security_question2']
@@ -165,8 +174,11 @@ def questions():
             return render_template('questions.html')
 
         # STORE QUESTIONS AND ANSWERS IN DATABASE
+        create_new_user(email, password, security_question1, security_answer1, security_question2, security_answer2)
         print("SQ1: {} ANS1: {}".format(security_question1, security_answer1))
         print("SQ2: {} ANS2: {}".format(security_question2, security_answer2))
+        print(email)
+        print(password)
 
         flash("You have successfully registered! Please login to continue.")
         return redirect(url_for('login'))
@@ -215,7 +227,7 @@ formatted_rmpc_values = ['${:,.2f}'.format(value) for value in rmpc_values]
 
 recent_month_pie_chart.layout = html.Div(children=[
     dcc.Graph(
-        id='pie-chart',
+        id='rmpc-pie-chart',
         figure={
             'data': [go.Pie(
                 labels=rmpc_labels,
@@ -231,6 +243,32 @@ recent_month_pie_chart.layout = html.Div(children=[
         config={'displaylogo': False}
     )
 ])
+
+
+def update_rmpc_pie_chart(user):
+    data = getLastMonth(user)
+    rmpc_labels = ['Needs', 'Wants', 'Savings']
+    rmpc_values = data
+
+    # Format values for display
+    formatted_rmpc_values = ['${:,.2f}'.format(value) for value in rmpc_values]
+
+    # Update the pie chart with new data
+    figure = {
+        'data': [go.Pie(
+            labels=rmpc_labels,
+            values=rmpc_values,
+            textinfo='label+percent',
+            hoverinfo='label+text',
+            text=formatted_rmpc_values
+        )],
+        'layout': go.Layout(
+            title='Your Most Recent Month',
+            paper_bgcolor='#f2f2f2'
+        )
+    }
+
+    return figure
 
 last_quarter_pie_chart = dash.Dash(__name__, server=app, url_base_pathname='/lqpc/')
 
