@@ -213,6 +213,10 @@ def getLineGraphInfo(userID):
             break
     return lineGraphInfo
 
+def checkUserNameInDB(userID):
+    result = session.query(User).filter_by(id=userID).first()
+    return result
+
 #print(session.query(User).filter_by(id="testusername@email.com").first())
 #create_new_user('CperksTestUser', 'password123', 'What is your favorite color?', 'Blue', 'What is your pet\'s name?', 'Spot') 
 #session.query(User).filter_by(id=2).delete()
