@@ -314,7 +314,7 @@
 
         <div class="text-center">
             <p>Press the button below to start saving!</p>
-            <form action="/submit_budget" method="post">
+            <form action="/budget" method="post">
                 <input type="hidden" name="budget1_total" value="{{ budget1_total }}">
                 <input type="hidden" name="budget2_total" value="{{ budget2_total }}">
                 <input type="hidden" name="budget3_total" value="{{ budget3_total }}">
@@ -332,7 +332,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="submit" class="btn btn-success" name="submit_budget">Submit</button>
                             </div>
                         </div>
                     </div>
