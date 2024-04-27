@@ -344,6 +344,11 @@ def signup():
             flash("Passwords do not match. Please try again.")
             return render_template('signup.html')
         
+        #check if the username is taken
+        if checkUserNameInDB(email) != None:
+            flash("Sorry, that email is already taken!")
+            return render_template('signup.html')
+        
         # Proceed with signup if passwords match
         # THIS IS WHERE DATABASE ENTRY WOULD OCCUR
 
