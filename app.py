@@ -114,7 +114,7 @@ def goals():
 
         #Set up colors for the pie charts
         if rmpc_labels[0] != 'NO BUDGET DATA ENTERED':
-            colors = {'Needs': '#1f77b4', 'Wants': '#d62728', 'Savings': '#2ca02c'}
+            colors = {'Needs': '#0b5d1e', 'Wants': '#0b3a5d', 'Savings': '#5d0b19'}
             color_map = [colors[label] for label in rmpc_labels]
             rmpc_fig.data[0].marker.colors = color_map
 
@@ -318,15 +318,26 @@ def login():
 @app.route("/forgotpassword/", methods=["POST","GET"])
 def fPassword():
     if request.method == "POST":
-
         email = request.form.get("email_forgot")
-        
-        # Use email variable to send out email
-
-        print("Users Email: {}".format(email))
-
-        flash("Password reset email sent")
+        if checkUserNameInDB(email) != None:
+            return redirect(url_for('forgotQuestions', email = email))
+        else:
+            flash("The email provided was not found, please try again")
     return render_template('fPassword.html')
+
+@app.route("/forgotQuestions/", methods=["POST","GET"])
+def forgotQuestions():
+    email = request.args.get('email')
+    recoveryQuestions = getRecoveryQuestions(email)
+    if request.method == "POST":
+        question1 = request.form.get('question1')
+        question2 = request.form.get('question2')
+        if checkRecoveryAnswers(email, question1, question2):
+            flash("You have been sent a recovery email, please check your inbox")
+            return redirect(url_for('index'))
+        flash("Answers were not correct. Please try again")
+        return render_template('fPasswordQuestions.html', recoveryQuestions = recoveryQuestions)
+    return render_template('fPasswordQuestions.html', recoveryQuestions = recoveryQuestions)
 
 @app.route("/signup/", methods=["POST","GET"])
 def signup():
