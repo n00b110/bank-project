@@ -6,7 +6,7 @@ import dash
 from dash import dcc, html
 import plotly.graph_objs as go
 import plotly.io as pio
-from database import create_new_user, checkLogin, getLastMonth, getLastQuarter, getLastYear, getLifeTime, getRecoveryQuestions, getLineGraphInfo, checkRecoveryAnswers, recordNewMonth
+from database import create_new_user, checkLogin, getLastMonth, getLastQuarter, getLastYear, getLifeTime, getRecoveryQuestions, getLineGraphInfo, checkRecoveryAnswers, recordNewMonth, checkUserNameInDB
 
 
 class Base(DeclarativeBase):
@@ -297,6 +297,9 @@ def login():
     if request.method == "POST":
         user = request.form["emailName"]
         password = request.form["pw"]
+        if checkUserNameInDB(user) == None:
+            flash("Incorrect Username or Password")
+            return render_template('login.html')
         if checkLogin(user, password) == True:
             session.permanent = True
             session["user"] = user
@@ -339,6 +342,11 @@ def signup():
         # Check if passwords match
         if password != repeat_password:
             flash("Passwords do not match. Please try again.")
+            return render_template('signup.html')
+        
+        #check if the username is taken
+        if checkUserNameInDB(email) != None:
+            flash("Sorry, that email is already taken!")
             return render_template('signup.html')
         
         # Proceed with signup if passwords match
