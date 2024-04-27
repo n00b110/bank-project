@@ -4,22 +4,22 @@
 {% block body%}
 <div class="container">
     <h1 style="text-align: center;">Let's See How You're Doing</h1>
-    <iframe src="http://127.0.0.1:5000/rmpc/" width="100%" height="600" frameborder="0"></iframe>
+    {{ rmpc_graph | safe}}
 </div>
 <div class="container">
     <div class="row row-cols-3">
         <div class="col">
-            <iframe src="http://127.0.0.1:5000/lqpc/" width="100%" height="600" frameborder="0"></iframe>
+            {{ lqpc_graph | safe}}
         </div>
         <div class="col">
-            <iframe src="http://127.0.0.1:5000/lypc/" width="100%" height="600" frameborder="0"></iframe>
+            {{ lypc_graph | safe}}
         </div>
         <div class="col">
-            <iframe src="http://127.0.0.1:5000/ltpc/" width="100%" height="600" frameborder="0"></iframe>
+            {{ ltpc_graph | safe}}
         </div>
     </div>
 </div>
 <div class="container">
-    <iframe src="http://127.0.0.1:5000/line_graph/" width="100%" height="600" frameborder="0"></iframe>
+    {{ linegraph_graph | safe}}
 </div>
 {% endblock %}
