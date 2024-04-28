@@ -250,7 +250,7 @@ def goals():
             x=x_data,
             y=savings_baseline,
             mode='lines+markers',
-            marker=dict(color='#C1FFC1'),
+            marker=dict(color='#ABFFAB'),
             name='Savings Goal',
             hoverinfo='x+text',
             text=formatted_savings_baseline_values
@@ -342,7 +342,7 @@ def forgotQuestions():
         question1 = request.form.get('question1')
         question2 = request.form.get('question2')
         if checkRecoveryAnswers(email, question1, question2):
-            flash("You have been sent a recovery email, please check your inbox")
+            flash("Please choose a new password")
             return redirect(url_for('resetPassword', email = email))
         flash("Answers were not correct. Please try again")
         return render_template('fPasswordQuestions.html', recoveryQuestions = recoveryQuestions)
