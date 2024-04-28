@@ -1,3 +1,4 @@
+from decimal import Decimal
 from flask import Flask, redirect, url_for, render_template, request, session, flash, render_template_string
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
@@ -6,7 +7,7 @@ import dash
 from dash import dcc, html
 import plotly.graph_objs as go
 import plotly.io as pio
-from database import create_new_user, checkLogin, getLastMonth, getLastQuarter, getLastYear, getLifeTime, getRecoveryQuestions, getLineGraphInfo, checkRecoveryAnswers, recordNewMonth, checkUserNameInDB
+from database import create_new_user, checkLogin, getLastMonth, getLastQuarter, getLastYear, getLifeTime, getRecoveryQuestions, getLineGraphInfo, checkRecoveryAnswers, recordNewMonth, checkUserNameInDB, updatePassword
 
 
 class Base(DeclarativeBase):
@@ -202,12 +203,19 @@ def goals():
         savings_actual = []
         budgetInfo = getLineGraphInfo(user)
         for entries in budgetInfo:
-            needs_actual.insert(0, entries[0])
-            wants_actual.insert(0, entries[1])
-            savings_actual.insert(0, entries[2])
-            needs_baseline.append(50)
-            wants_baseline.append(30)
-            savings_baseline.append(20)
+            needs_amount = entries[0]
+            wants_amount = entries[1]
+            savings_amount = entries[2]
+            total = needs_amount + wants_amount + savings_amount
+            needs_baseline_amount = total / Decimal(2)
+            wants_baseline_amount = total * (Decimal(3) / Decimal(10))
+            savings_baseline_amount = total * (Decimal(1) / Decimal(5))
+            needs_actual.insert(0, needs_amount)
+            wants_actual.insert(0, wants_amount)
+            savings_actual.insert(0, savings_amount)
+            needs_baseline.insert(0, needs_baseline_amount)
+            wants_baseline.insert(0, wants_baseline_amount)
+            savings_baseline.insert(0, savings_baseline_amount)
 
         # Define formatted values for display
         formatted_needs_baseline_values = ['${:,.2f}'.format(value) for value in needs_baseline]
@@ -278,7 +286,8 @@ def goals():
         line_fig.update_layout(
             title='Another Look at the Data',
             xaxis=dict(title='Months'),
-            yaxis=dict(title='Percent of Spending', range=[0, 100]),
+            #yaxis=dict(title='Percent of Spending', range=[0, 100]),
+            yaxis=dict(title='Amount Spent'),
             paper_bgcolor='#f2f2f2'
         )
 
@@ -334,10 +343,23 @@ def forgotQuestions():
         question2 = request.form.get('question2')
         if checkRecoveryAnswers(email, question1, question2):
             flash("You have been sent a recovery email, please check your inbox")
-            return redirect(url_for('index'))
+            return redirect(url_for('resetPassword', email = email))
         flash("Answers were not correct. Please try again")
         return render_template('fPasswordQuestions.html', recoveryQuestions = recoveryQuestions)
     return render_template('fPasswordQuestions.html', recoveryQuestions = recoveryQuestions)
+
+@app.route("/resetPassword/", methods=["POST", "GET"])
+def resetPassword():
+    email = request.args.get('email')
+    if request.method == "POST":
+        newPassword = request.form.get('newPassword')
+        if request.form.get('newPassword') == request.form.get('confirmPassword'):
+            updatePassword(email, newPassword)
+            flash("Your Password has been Updated!")
+            return redirect(url_for('login'))
+        else:
+            flash("Oops, your passwords did not match!")
+    return render_template('resetPassword.html')
 
 @app.route("/signup/", methods=["POST","GET"])
 def signup():
