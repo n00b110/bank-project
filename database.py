@@ -29,6 +29,12 @@ class User(Base):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
     
+def updatePassword(userID, password):
+    new_password_hash = generate_password_hash(password)
+    session.query(User).filter_by(id=userID).update({"password_hash": new_password_hash})
+    session.commit()
+    session.close()
+    
 def checkLogin(userID, password):
     result = session.query(User).filter_by(id=userID).first()
     if result.check_password(password) == True:
