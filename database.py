@@ -245,7 +245,8 @@ def checkUserNameInDB(userID):
 #print(session.query(BudgetData).filter_by(id="testusername@email.com").first().needs)
 #print(session.query(User).filter_by(id="CperksTestUser").first())
 #print(checkLogin("test", "testpassword"))
-# result = session.query(BudgetData).filter_by(id="testusername4@email.com")
+# result = session.query(User).filter_by(id="testusername3@email.com").first()
+# print(result.recoverya1)
 # for month in result:
 #     print (month.dataType, month.needs, month.wants, month.savings)
 
