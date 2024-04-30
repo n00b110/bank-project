@@ -321,7 +321,7 @@ def login():
         if "user" in session:
             user = session["user"]
             flash("Looks like you're already logged in!")
-            return redirect(request.referrer)    
+            return redirect(request.referrer or url_for("dashboard"))
         return render_template('login.html')
 
 @app.route("/forgotpassword/", methods=["POST","GET"])
@@ -332,21 +332,28 @@ def fPassword():
             return redirect(url_for('forgotQuestions', email = email))
         else:
             flash("The email provided was not found, please try again")
+    else:
+        if "user" in session:
+            flash("Looks like you're already logged in!")
+            return redirect(request.referrer or url_for('dashboard'))
     return render_template('fPassword.html')
 
 @app.route("/forgotQuestions/", methods=["POST","GET"])
 def forgotQuestions():
-    email = request.args.get('email')
-    recoveryQuestions = getRecoveryQuestions(email)
-    if request.method == "POST":
-        question1 = request.form.get('question1')
-        question2 = request.form.get('question2')
-        if checkRecoveryAnswers(email, question1, question2):
-            flash("Please choose a new password")
-            return redirect(url_for('resetPassword', email = email))
-        flash("Answers were not correct. Please try again")
+    if request.args:
+        email = request.args.get('email')
+        recoveryQuestions = getRecoveryQuestions(email)
+        if request.method == "POST":
+            question1 = request.form.get('question1')
+            question2 = request.form.get('question2')
+            if checkRecoveryAnswers(email, question1, question2):
+                flash("Please choose a new password")
+                return redirect(url_for('resetPassword', email = email))
+            flash("Answers were not correct. Please try again")
+            return render_template('fPasswordQuestions.html', recoveryQuestions = recoveryQuestions)
         return render_template('fPasswordQuestions.html', recoveryQuestions = recoveryQuestions)
-    return render_template('fPasswordQuestions.html', recoveryQuestions = recoveryQuestions)
+    else:
+        return redirect(url_for('index'))
 
 @app.route("/resetPassword/", methods=["POST", "GET"])
 def resetPassword():
