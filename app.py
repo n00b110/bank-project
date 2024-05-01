@@ -357,16 +357,19 @@ def forgotQuestions():
 
 @app.route("/resetPassword/", methods=["POST", "GET"])
 def resetPassword():
-    email = request.args.get('email')
-    if request.method == "POST":
-        newPassword = request.form.get('newPassword')
-        if request.form.get('newPassword') == request.form.get('confirmPassword'):
-            updatePassword(email, newPassword)
-            flash("Your Password has been Updated!")
-            return redirect(url_for('login'))
-        else:
-            flash("Oops, your passwords did not match!")
-    return render_template('resetPassword.html')
+    if request.args:
+        email = request.args.get('email')
+        if request.method == "POST":
+            newPassword = request.form.get('newPassword')
+            if request.form.get('newPassword') == request.form.get('confirmPassword'):
+                updatePassword(email, newPassword)
+                flash("Your Password has been Updated!")
+                return redirect(url_for('login'))
+            else:
+                flash("Oops, your passwords did not match!")
+        return render_template('resetPassword.html')
+    else:
+        return redirect(url_for('index'))
 
 @app.route("/signup/", methods=["POST","GET"])
 def signup():
