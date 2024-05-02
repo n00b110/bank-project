@@ -16,7 +16,6 @@ class User(Base):
     __tablename__ = 'Users'
 
     id = Column(String, primary_key=True, unique=True, nullable=False)
-    #username = Column(String, nullable=False)
     password_hash = Column(String, nullable=False)
     recoveryq1 = Column(String, nullable=False)
     recoverya1 = Column(String, nullable=False)
@@ -28,18 +27,21 @@ class User(Base):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
+
+#Updates the password of the given userID assuming it is in the database    
 def updatePassword(userID, password):
     new_password_hash = generate_password_hash(password)
     session.query(User).filter_by(id=userID).update({"password_hash": new_password_hash})
     session.commit()
     session.close()
-    
+
+#Returns a boolean concerning whether or not the given userID and password match an entry in the DB   
 def checkLogin(userID, password):
     result = session.query(User).filter_by(id=userID).first()
     if result.check_password(password) == True:
         return True
 
+#Returns a boolean on whether or not the recovery answers match for the given userID
 def checkRecoveryAnswers(userID, answer1, answer2):
     result = session.query(User).filter_by(id=userID).first()
     if result.recoverya1 == answer1 and result.recoverya2 == answer2:
@@ -47,12 +49,13 @@ def checkRecoveryAnswers(userID, answer1, answer2):
     else:
         return False
     
+#Returns the two recovery questions chosen by the given userID
 def getRecoveryQuestions(userID):
     result = session.query(User).filter_by(id=userID).first()
     answers = [result.recoveryq1, result.recoveryq2]
     return answers
 
-
+#Creates the Budgeting Data table in the DB
 class BudgetData(Base):
     __tablename__ = 'BudgetData'
 
@@ -72,11 +75,9 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-
+#Creates a new user entry in the User table with the given values
 def create_new_user(userID, password, recoveryq1, recoverya1, recoveryq2, recoverya2):
-    #new_id = get_next_id()
     new_user = User(id=userID,
-                    #username=username,
                     password_hash=password,
                     recoveryq1=recoveryq1,
                     recoverya1=recoverya1,
@@ -88,6 +89,7 @@ def create_new_user(userID, password, recoveryq1, recoverya1, recoveryq2, recove
     session.close()
     create_new_user_data(userID)
 
+#Creates blank entries in the BudgetData table for the given user
 def create_new_user_data(id):
     new_user_data = BudgetData(id=id,
                                dataType="m1")
@@ -131,6 +133,7 @@ def create_new_user_data(id):
     session.commit()
     session.close()
 
+#Shifts the months recorded for the given user in the BudgetData table to prepare for a new month to be entered
 def shift_months(userID):
     old_values = [None, None, None]
     for i in range(12):
@@ -146,6 +149,7 @@ def shift_months(userID):
     session.commit()
     session.close()
 
+#Records a new month with the given spending values for the given user
 def recordNewMonth(userID, needs, wants, savings):
     result = session.query(BudgetData).filter_by(id=userID, dataType="m1").first()
     if result.needs != None:
@@ -162,6 +166,7 @@ def recordNewMonth(userID, needs, wants, savings):
     session.commit()
     session.close()
 
+#Returns a list with the most recent month's needs, wants, and savings for the given user
 def getLastMonth(userID):
     result = session.query(BudgetData).filter_by(id=userID, dataType="m1").first()
     month_results = [result.needs, result.wants, result.savings]
@@ -171,6 +176,7 @@ def getLastMonth(userID):
         month_results[2] = 0.00
     return month_results
 
+#Returns a list with the most recent quarter's needs, wants, and savings for the given user
 def getLastQuarter(userID):
     zero = Decimal('0.00')
     quarter_results = [zero, zero, zero]
@@ -185,6 +191,7 @@ def getLastQuarter(userID):
             break
     return quarter_results
 
+#Returns a list with the most recent year's needs, wants, and savings for the given user
 def getLastYear(userID):
     zero = Decimal('0.00')
     year_results = [zero, zero, zero]
@@ -199,6 +206,7 @@ def getLastYear(userID):
             break
     return year_results
 
+#Returns a list with the lifetime needs, wants, and savings for the given user
 def getLifeTime(userID):
     result = session.query(BudgetData).filter_by(id=userID, dataType="LT").first()
     lifetime_results = [result.needs, result.wants, result.savings]
@@ -208,6 +216,7 @@ def getLifeTime(userID):
         lifetime_results[2] = 0.00
     return lifetime_results
 
+#Returns a list with the most recent year's needs, wants, and savings for the given user to be used in the line graph
 def getLineGraphInfo(userID):
     lineGraphInfo = []
     for i in range(12):
@@ -219,73 +228,7 @@ def getLineGraphInfo(userID):
             break
     return lineGraphInfo
 
+#Checks if the given userID exists in the User table in the DB
 def checkUserNameInDB(userID):
     result = session.query(User).filter_by(id=userID).first()
     return result
-
-#print(session.query(User).filter_by(id="testusername@email.com").first())
-#create_new_user('CperksTestUser', 'password123', 'What is your favorite color?', 'Blue', 'What is your pet\'s name?', 'Spot') 
-#session.query(User).filter_by(id=2).delete()
-# recordNewMonth("testusername4@email.com", 45, 52, 3)
-# recordNewMonth("testusername4@email.com", 41, 35, 24)
-# recordNewMonth("testusername4@email.com", 84, 53, 78)
-# recordNewMonth("testusername4@email.com", 12, 87, 45)
-# recordNewMonth("testusername4@email.com", 49, 65, 74)
-# recordNewMonth("testusername4@email.com", 24, 41, 32)
-# recordNewMonth("testusername4@email.com", 91, 8, 1)
-# recordNewMonth("testusername4@email.com", 23, 56, 95)
-# recordNewMonth("testusername4@email.com", 4, 72, 12)
-# recordNewMonth("testusername4@email.com", 107, 45, 99)
-# recordNewMonth("testusername4@email.com", 84, 53, 78)
-# recordNewMonth("testusername4@email.com", 584, 300, 245)
-# recordNewMonth(1, 45, 52, 3)
-# recordNewMonth(1, 58, 30, 12)
-# session.commit()
-# session.close()
-#print(session.query(BudgetData).filter_by(id="testusername@email.com").first().needs)
-#print(session.query(User).filter_by(id="CperksTestUser").first())
-#print(checkLogin("test", "testpassword"))
-# result = session.query(User).filter_by(id="testusername3@email.com").first()
-# print(result.recoverya1)
-# for month in result:
-#     print (month.dataType, month.needs, month.wants, month.savings)
-
-# print(getLastYear("testusername4@email.com"))
-'''
-session.query(BudgetData).delete()
-session.commit()
-session.close()
-session.query(User).delete()
-session.commit()
-session.close()
-users = session.query(User).all()
-users_data = session.query(BudgetData).all()
-
-
-for user in users:
-    print(user.id, user.recoveryq1, user.recoverya1)
-'''
-'''
-users_data = session.query(BudgetData).all()
-for data in users_data:
-    print(data.id, data.needs)
-session.commit()
-session.close()
-'''
-'''
-users = session.query(User).all()
-users_data = session.query(BudgetData).all()
-
-
-for user in users:
-    print(user.id, user.username)
-
-for data in users_data:
-    print(data.id, data.needs)
-
-
-session.commit()
-session.close()
-print("DONE")
-'''
-
